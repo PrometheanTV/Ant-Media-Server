@@ -72,6 +72,7 @@ public class DBStoresUnitTest {
 		testStreamWithId(dataStore);
 		testSaveDetection(dataStore);
 		testFilterSearchOperations(dataStore);
+		testFilterCategoryOperations(dataStore);
 		testAddSocialEndpointCredentials(dataStore);
 		testVoDFunctions(dataStore);
 		testSaveStreamInDirectory(dataStore);
@@ -99,6 +100,7 @@ public class DBStoresUnitTest {
 		testStreamWithId(dataStore);
 		testSaveDetection(dataStore);
 		testFilterSearchOperations(dataStore);
+		testFilterCategoryOperations(dataStore);
 		testAddSocialEndpointCredentials(dataStore);
 		testVoDFunctions(dataStore);
 		testSaveStreamInDirectory(dataStore);
@@ -139,6 +141,7 @@ public class DBStoresUnitTest {
 		testStreamWithId(dataStore);
 		testSaveDetection(dataStore);
 		testFilterSearchOperations(dataStore);
+		testFilterCategoryOperations(dataStore);
 		testAddSocialEndpointCredentials(dataStore);
 		testVoDFunctions(dataStore);
 		testSaveStreamInDirectory(dataStore);
@@ -817,6 +820,26 @@ public class DBStoresUnitTest {
 
 	}
 
+	private void testFilterCategoryOperations(IDataStore dataStore) {
+		Broadcast liveBroadcast = new Broadcast("live_test");
+		liveBroadcast.setType("liveStream");
+		liveBroadcast.setCategory("abc123");
+
+		assertNotNull(dataStore.save(liveBroadcast));
+
+		assertNotNull(liveBroadcast.getStreamId());
+
+		String live_type = dataStore.get(liveBroadcast.getStreamId()).getType();
+
+		assertEquals("liveStream", live_type);
+
+		String category = dataStore.get(liveBroadcast.getStreamId()).getCategory();
+		assertEquals("abc123", category);
+
+		List<Broadcast> returnList = dataStore.getBroadcastListByCategory(0, 10, "abc123");
+
+		assertEquals(1, returnList.size());
+	}
 
 	private void testFilterSearchOperations(IDataStore dataStore) {
 

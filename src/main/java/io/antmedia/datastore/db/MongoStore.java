@@ -285,7 +285,15 @@ public class MongoStore implements IDataStore {
 		return datastore;
 	}
 
-
+	@Override
+	public List<Broadcast> getBroadcastListByCategory(int offset, int size, String category) {
+		try {
+			return datastore.find(Broadcast.class).field("category").equal(category).asList(new FindOptions().skip(offset).limit(size));
+		} catch (Exception e) {
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}
+		return null;
+	}
 
 
 	@Override

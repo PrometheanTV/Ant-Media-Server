@@ -362,6 +362,50 @@ public class MapDBStore implements IDataStore {
 	}
 
 	@Override
+	public List<Broadcast> getBroadcastListByCategory(int offset, int size, String category) {
+		List<Broadcast> list = new ArrayList<Broadcast>();
+		synchronized (this) {
+			int t = 0;
+			int itemCount = 0;
+			if (size > MAX_ITEM_IN_ONE_LIST) {
+				size = MAX_ITEM_IN_ONE_LIST;
+			}
+			if (offset < 0) {
+				offset = 0;
+			}
+
+			Object[] objectArray = map.getValues().toArray();
+
+			Broadcast[] broadcastArray = new Broadcast[objectArray.length];
+
+			for (int i = 0; i < objectArray.length; i++) {
+				broadcastArray[i] = gson.fromJson((String) objectArray[i], Broadcast.class);
+			}
+
+			List<Broadcast> filterList = new ArrayList<>();
+			for (int i = 0; i < broadcastArray.length; i++) {
+				if (broadcastArray[i].getCategory().equals(category)) {
+					filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+				}
+			}
+
+			for (Broadcast broadcast : filterList) {
+				if (t < offset) {
+					t++;
+					continue;
+				}
+				list.add(broadcast);
+				itemCount++;
+
+				if (itemCount >= size) {
+					break;
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
 	public List<VoD> getVodList(int offset, int size) {
 
 		List<VoD> list = new ArrayList<>();

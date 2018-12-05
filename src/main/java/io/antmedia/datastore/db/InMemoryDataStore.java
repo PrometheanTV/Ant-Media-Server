@@ -215,8 +215,38 @@ public class InMemoryDataStore implements IDataStore {
 		return list;
 	}
 
+	@Override
+	public List<Broadcast> getBroadcastListByCategory(int offset, int size, String category) {
+		int t = 0;
+		int itemCount = 0;
+		if (size > MAX_ITEM_IN_ONE_LIST) {
+			size = MAX_ITEM_IN_ONE_LIST;
+		}
+		if (offset < 0) {
+			offset = 0;
+		}
 
+		Collection<Broadcast> values = broadcastMap.values();
 
+		List<Broadcast> list = new ArrayList();
+
+		for (Broadcast broadcast : values) {
+			if (broadcast.getCategory().equals(category)) {
+				if (t < offset) {
+					t++;
+					continue;
+				}
+				list.add(broadcast);
+
+				itemCount++;
+
+				if (itemCount >= size) {
+					break;
+				}
+			}
+		}
+		return list;
+	}
 
 	@Override
 	public List<Broadcast> getExternalStreamsList() {

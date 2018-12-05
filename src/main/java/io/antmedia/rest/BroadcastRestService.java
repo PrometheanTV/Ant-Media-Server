@@ -947,6 +947,24 @@ public class BroadcastRestService {
 		return getDataStore().filterBroadcastList(offset, size, type);
 	}
 
+        /**
+         * Filter broadcast according to category
+         * 
+         * @param category
+         *            category name
+         * 
+         * @return {@link io.antmedia.rest.BroadcastRestService.Result}
+         * 
+         */
+
+        @GET
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Path("/broadcast/filterListByCategory/{offset}/{size}/{category}")
+        @Produces(MediaType.APPLICATION_JSON)
+        public List<Broadcast> getBroadcastListByCategory(@PathParam("offset") int offset, @PathParam("size") int size,
+                        @PathParam("category") String category) {
+                return getDataStore().getBroadcastListByCategory(offset, size, category);
+        }
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
