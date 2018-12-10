@@ -250,14 +250,30 @@ public class InMemoryDataStore implements IDataStore {
 			offset = 0;
 		}
 
-		Collection<Broadcast> values =broadcastMap.values();
+		Collection<Broadcast> values = broadcastMap.values();
 
 		List<Broadcast> list = new ArrayList();
 
-		for (Broadcast broadcast : values) 
-		{
-			if(broadcast.getType().equals("ipCamera")) 
-			{
+		String field = "type";
+		String value = "ipCamera";
+		if (type.contains(":")) {
+			String[] parts = type.split(":");
+			field = parts[0];
+			value = parts[1];
+		}
+
+		for (Broadcast broadcast : values) {
+			Boolean isEqual = false;
+
+			if (field.equals("category")) {
+				isEqual = broadcast.getCategory().equals(value);
+			} else if (field.equals("status")) {
+				isEqual = broadcast.getStatus().equals(value);
+			} else {
+				isEqual = broadcast.getType().equals("ipCamera");
+			}
+
+			if (isEqual) {
 				if (t < offset) {
 					t++;
 					continue;
