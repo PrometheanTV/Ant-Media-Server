@@ -266,7 +266,7 @@ public class InMemoryDataStore implements IDataStore {
 			Boolean isEqual = false;
 
 			if (field.equals("category")) {
-				isEqual = broadcast.getCategory().equals(value);
+				isEqual = (broadcast.getCategory() != null) && broadcast.getCategory().equals(value);
 			} else if (field.equals("status")) {
 				isEqual = broadcast.getStatus().equals(value);
 			} else {
