@@ -258,8 +258,13 @@ public class InMemoryDataStore implements IDataStore {
 		String value = "ipCamera";
 		if (type.contains(":")) {
 			String[] parts = type.split(":");
-			field = parts[0];
-			value = parts[1];
+			if (parts.length > 1) {
+				field = parts[0];
+				value = parts[1];
+			} else {
+				field = "type";
+				value = "ipCamera";
+			}
 		}
 
 		for (Broadcast broadcast : values) {
