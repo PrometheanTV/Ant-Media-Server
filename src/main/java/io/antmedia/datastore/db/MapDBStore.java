@@ -440,9 +440,12 @@ public class MapDBStore implements IDataStore {
 			List<Broadcast> filterList = new ArrayList<>();
 			for (int i = 0; i < broadcastArray.length; i++) {
 				if (field.equals("category")) {
-					if (broadcastArray[i].getCategory() != null) {
-						if (broadcastArray[i].getCategory().equals(value)) {
-							filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+					System.out.println("Found category check");
+					if (broadcastArray[i] != null) {
+						if (broadcastArray[i].getCategory() != null) {
+							if (broadcastArray[i].getCategory().equals(value)) {
+								filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+							}
 						}
 					}
 				} else if (field.equals("status")) {
