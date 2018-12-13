@@ -440,7 +440,17 @@ public class MapDBStore implements IDataStore {
 			List<Broadcast> filterList = new ArrayList<>();
 			for (int i = 0; i < broadcastArray.length; i++) {
 				if (field.equals("category")) {
-					System.out.println("Found category check");
+
+
+
+
+
+
+
+
+
+
+
 					if (broadcastArray[i] != null) {
 						if (broadcastArray[i].getCategory() != null) {
 							if (broadcastArray[i].getCategory().equals(value)) {
