@@ -428,11 +428,33 @@ public class MapDBStore implements IDataStore {
 				broadcastArray[i] = gson.fromJson((String) objectArray[i], Broadcast.class);
 			}
 
+
+			String field = "type";
+			String value = type;
+			if (type.contains(":")) {
+				String[] parts = type.split(":");
+				if (parts.length > 1) {
+					if (parts[0] != "" && parts[1] != "") {
+						field = parts[0];
+						value = parts[1];
+					}
+				}
+			}
+
 			List<Broadcast> filterList = new ArrayList<>();
 			for (int i = 0; i < broadcastArray.length; i++) {
-
-				if (broadcastArray[i].getType().equals(type)) {
-					filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+				if (field.equals("category")) {
+					if (broadcastArray[i].getCategory() != null && broadcastArray[i].getCategory().equals(value)) {
+						filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+					}
+				} else if (field.equals("status")) {
+					if (broadcastArray[i].getStatus().equals(value)) {
+						filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+					}
+				} else {
+					if (broadcastArray[i].getType().equals(type)) {
+						filterList.add(gson.fromJson((String) objectArray[i], Broadcast.class));
+					}
 				}
 			}
 			Iterator<Broadcast> iterator = filterList.iterator();

@@ -253,10 +253,32 @@ public class InMemoryDataStore implements IDataStore {
 
 		List<Broadcast> list = new ArrayList();
 
-		for (Broadcast broadcast : values) 
-		{
-			if(broadcast.getType().equals("ipCamera")) 
-			{
+		String field = "type";
+		String value = "ipCamera";
+		if (type.contains(":")) {
+			String[] parts = type.split(":");
+			if (parts.length > 1) {
+				if (parts[0] != "" && parts[1] != "") {
+					field = parts[0];
+					value = parts[1];
+				}
+			}
+		}
+
+		for (Broadcast broadcast : values) {
+			Boolean isEqual = false;
+
+			if (field.equals("category")) {
+				if (broadcast.getCategory() != null) {
+					isEqual = broadcast.getCategory().equals(value);
+				}
+			} else if (field.equals("status")) {
+				isEqual = broadcast.getStatus().equals(value);
+			} else {
+				isEqual = broadcast.getType().equals("ipCamera");
+			}
+
+			if (isEqual) {
 				if (t < offset) {
 					t++;
 					continue;
@@ -270,6 +292,7 @@ public class InMemoryDataStore implements IDataStore {
 				}
 			}
 		}
+
 		return list;
 	}
 

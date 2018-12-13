@@ -332,7 +332,23 @@ public class MongoStore implements IDataStore {
 	@Override
 	public List<Broadcast> filterBroadcastList(int offset, int size, String type) {
 		try {
-			return datastore.find(Broadcast.class).field("type").equal(type).asList(new FindOptions().skip(offset).limit(size));
+			String field = "type";
+			String value = type;
+			if (type.contains(":")) {
+				String[] parts = type.split(":");
+				if (parts.length > 1) {
+					if (parts[0] != "" && parts[1] != "") {
+						field = parts[0];
+						value = parts[1];
+					}
+				}
+			}
+
+			if (field.equals("category") || field.equals("status")) {
+				return datastore.find(Broadcast.class).field(field).equal(value).asList(new FindOptions().skip(offset).limit(size));
+			} else {
+				return datastore.find(Broadcast.class).field("type").equal(type).asList(new FindOptions().skip(offset).limit(size));
+			}
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
